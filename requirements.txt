@@ -1,0 +1,5 @@
+discord.py
+asyncio
+dataIO
+requests
+bs4

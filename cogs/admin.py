@@ -33,7 +33,7 @@ class Sprakradet(commands.Cog):
         w_list = BotSetup.settings["smallserver_whitelist"]
         if big:
             w_list = BotSetup.settings["bigserver_whitelist"]
-        embed = discord.Embed(title="Ord i listen", color=ctx.author.colour, description=", ".join(w_list))
+        embed = discord.Embed(title="Untatte låneord", color=ctx.author.colour, description=", ".join(w_list))
         embed.add_field(name=f"**Guild Type**", value=f"Er stor: **{big}**", inline=True)
         embed.add_field(name=f"**Lengde på liste**", value=f"{len(w_list)}", inline=True)
         embed.set_footer(text=f"{ctx.author}", icon_url=ctx.author.avatar_url)

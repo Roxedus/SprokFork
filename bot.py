@@ -10,12 +10,17 @@ from tools import GetWords
 
 basic_conf = {"token": "Token", "prefix": ["!"], "playing": "Teller"}
 
+extra_bad_words = {'cringe': 'kringle'}
+extra_short_words = {'rph': 'Rister på hodet', 'fåvæ': 'For å være ærlig'}
+
 
 class BotSetup:
     start_time = time.time()
-    settings = js.load("data/conf.json")
+    settings = js.load("data/conf.json", enable_verbose=False)
     bad_words = dict(GetWords.List.dict_to_json("https://www.sprakradet.no/sprakhjelp/Skriverad/Avloeysarord/"))
+    bad_words.update(extra_bad_words)
     short_words = dict(GetWords.List.dict_to_json("https://www.sprakradet.no/sprakhjelp/Skriveregler/Forkortinger/"))
+    short_words.update(extra_short_words)
     default_settings = {}
 
     def check_folders():
@@ -29,10 +34,10 @@ class BotSetup:
         f = "data/conf.json"
         if not js.is_json_file(f):
             print("Creating conf.json...")
-            js.dump(basic_conf, f)
+            js.dump(basic_conf, f, enable_verbose=False)
         else:  # consistency check
             current = js.load(f)
-            js.dump(current, f, overwrite=True, indent_format=True)
+            js.dump(current, f, overwrite=True, indent_format=True, enable_verbose=False)
 
 
 def bot_start():

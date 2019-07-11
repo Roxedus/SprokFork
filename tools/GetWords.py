@@ -8,7 +8,7 @@ class List:
         soup = BS(page.text, "html.parser")
         word_table = soup.find("tbody")
         word_table_breakdown = word_table.find_all("tr")
-        word_table_dict = [['rph', 'Rister på hodet'], ['fåvæ', 'For å være ærlig']]
+        word_table_dict = []
 
         for row in word_table_breakdown:
             if Work.check(row):

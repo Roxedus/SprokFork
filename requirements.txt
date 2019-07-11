@@ -1,5 +1,6 @@
 discord.py
 asyncio
+aiohttp
 dataIO
 requests
 bs4

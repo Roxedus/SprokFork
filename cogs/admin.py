@@ -2,8 +2,9 @@ import discord
 from discord.ext import commands
 from typing import Optional
 from bot import BotSetup
-import aiohttp
 import dataIO
+
+from cogs.utils.Defaults import s_embed
 
 
 class checks:
@@ -33,10 +34,11 @@ class Sprakradet(commands.Cog):
         w_list = BotSetup.settings["smallserver_whitelist"]
         if big:
             w_list = BotSetup.settings["bigserver_whitelist"]
-        embed = discord.Embed(title="Untatte låneord", color=ctx.author.colour, description=", ".join(w_list))
+        embed = s_embed(self, ctx, True)
+        embed.title = "Untatte låneord"
+        embed.description = ", ".join(w_list)
         embed.add_field(name=f"**Guild Type**", value=f"Er stor: **{big}**", inline=True)
         embed.add_field(name=f"**Lengde på liste**", value=f"{len(w_list)}", inline=True)
-        embed.set_footer(text=f"{ctx.author}", icon_url=ctx.author.avatar_url)
         await ctx.send(embed=embed)
 
     @commands.guild_only()
@@ -91,29 +93,10 @@ class Sprakradet(commands.Cog):
         BotSetup.settings["rate"][str(ctx.guild.id)] = str(num)
         self.save_json()
 
-    async def on_command_error(self, ctx, err):
-        if isinstance(err, commands.CheckFailure):
-            pass
-
     def save_json(self):
         dataIO.js.dump(BotSetup.settings, "data/conf.json", overwrite=True, indent_format=True,
                        enable_verbose=False)
 
-
-class Preposisjon(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
-        self.session = aiohttp.ClientSession(loop=self.bot.loop)
-
-    @commands.command()
-    async def prep(self, ctx, ord):
-        """
-        Bruker https://github.com/draperunner/preposisjon for å finne preosisjon.
-        """
-        async with self.session.get(f"https://preposisjon.no/api?place={ord}", timeout=30) as response:
-            assert response.status == 200
-            p = await response.json()
-            await ctx.send(f"Du er {p['preposisjon']} {ord.title()}")
 
 class Info(commands.Cog):
     def __init__(self, bot):
@@ -144,5 +127,4 @@ class Info(commands.Cog):
 
 def setup(bot):
     bot.add_cog(Sprakradet(bot))
-    bot.add_cog(Preposisjon(bot))
     bot.add_cog(Info(bot))

@@ -5,16 +5,17 @@ import discord
 from discord.ext import commands
 import asyncio
 
-from tools import GetList
+from tools import GetWords
 
 
-basic_conf = {"token": "Token", "prefix": ["!"], "playing": "Sier morn"}
+basic_conf = {"token": "Token", "prefix": ["!"], "playing": "Teller"}
 
 
 class BotSetup:
     start_time = time.time()
     settings = js.load("data/conf.json")
-    bad_words = dict(GetList.List.dict_to_json())
+    bad_words = dict(GetWords.List.dict_to_json("https://www.sprakradet.no/sprakhjelp/Skriverad/Avloeysarord/"))
+    short_words = dict(GetWords.List.dict_to_json("https://www.sprakradet.no/sprakhjelp/Skriveregler/Forkortinger/"))
     default_settings = {}
 
     def check_folders():
@@ -44,6 +45,8 @@ def bot_start():
         raise SystemExit(0)
 
     bot = commands.Bot(command_prefix=prefix, prefix=prefix)
+
+    bot.short_words = BotSetup.short_words
 
     print("Logging in")
 

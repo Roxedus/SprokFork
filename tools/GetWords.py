@@ -3,13 +3,12 @@ from bs4 import BeautifulSoup as BS
 
 
 class List:
-    def get_dict():
-        url = "https://www.sprakradet.no/sprakhjelp/Skriverad/Avloeysarord/"
+    def get_dict(url):
         page = requests.get(url)
         soup = BS(page.text, "html.parser")
         word_table = soup.find("tbody")
         word_table_breakdown = word_table.find_all("tr")
-        word_table_dict = []
+        word_table_dict = [['rph', 'Rister på hodet'], ['fåvæ', 'For å være ærlig']]
 
         for row in word_table_breakdown:
             if Work.check(row):
@@ -22,8 +21,8 @@ class List:
                 pass
         return word_table_dict
 
-    def dict_to_json():
-        gen_dict = List.get_dict()
+    def dict_to_json(url):
+        gen_dict = List.get_dict(url)
         json = {}
         for uncompressed_dict in gen_dict:
             bad_word = uncompressed_dict[0]
@@ -35,7 +34,7 @@ class List:
 class Work:
 
     def check(row):
-        for line in row.find_all("td", {"valign": "top", "align": "left"}):
+        for line in row.find_all("td", {"valign": "top"}):
             if line.find("h2") or line is None:
                 return False
             elif line.get_text() == " " or line.get_text() == "Til toppen":

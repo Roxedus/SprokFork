@@ -18,7 +18,7 @@ class Sniffer(commands.Cog):
         s_bad_words = ""
         rate = 50  # %av 100
         desc = ""
-        embed = discord.Embed(title="Melding fra språkrådet", colour=message.author.colour)
+        embed = discord.Embed(title="Melding fra språkrådet", color=discord.Colour.from_rgb(245, 151, 47))
 
         # Generate bad words
         big = message.guild.large

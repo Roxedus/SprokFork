@@ -19,7 +19,7 @@ class Oppslag(commands.Cog):
             assert response.status == 200
             p = await response.json()
             embed = s_embed(self, ctx)
-            embed.description = f"Du er {p['preposisjon']} {plass.title()}"
+            embed.description = f"Du er **{p['preposisjon']}** __{plass.title()}__"
             await ctx.send(embed=embed)
 
     @commands.command(aliases=["forkort", "kort"])

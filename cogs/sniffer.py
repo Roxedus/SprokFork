@@ -1,14 +1,17 @@
+# Discord Packages
 import discord
 from discord.ext import commands
-from bot import BotSetup
+
 import random
+
 import dataIO
+from bot import BotSetup
 
 
 class Sniffer(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-    """Listen to words."""
+    """Søker etter ord"""
 
     async def msg_sniffer(self, message):
         big = False
@@ -82,6 +85,7 @@ class Sniffer(commands.Cog):
             msg = f"Du har blokkert meg fra å sende deg meldinger, {message.author.mention}"
             await message.channel.send(content=msg, embed=embed)
 
+    @staticmethod
     def save_json(self):
         dataIO.js.dump(BotSetup.settings, "data/conf.json", overwrite=True, indent_format=True,
                        enable_verbose=False)

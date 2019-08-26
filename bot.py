@@ -1,12 +1,15 @@
-import os
-import time
-from dataIO import js
+# Discord Packages
 import discord
 from discord.ext import commands
+
 import asyncio
+import os
+import time
 
+from dataIO import js
+
+# Bot Utilities
 from tools import GetWords
-
 
 basic_conf = {"token": "Token", "prefix": ["!"], "playing": "Teller"}
 

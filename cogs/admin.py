@@ -1,9 +1,13 @@
+# Discord Packages
 import discord
 from discord.ext import commands
-from typing import Optional
-from bot import BotSetup
-import dataIO
 
+from typing import Optional
+
+import dataIO
+from bot import BotSetup
+
+# Bot Utilities
 from cogs.utils.Defaults import s_embed
 
 
@@ -14,14 +18,31 @@ class checks:
         async def pred(ctx):
             is_owner = str(ctx.message.author.id) == str(BotSetup.settings["owner"])
             is_admin = ctx.message.author.guild_permissions.administrator
-            return is_admin or is_owner
+            is_mod = ctx.message.author.guild_permissions.ban_members
+            return is_admin or is_owner or is_mod
 
         return commands.check(pred)
 
 
-class Sprakradet(commands.Cog):
+class Admin(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+
+    @commands.group(name='endre')
+    @checks.is_mod()
+    async def _admin(self, ctx):
+        """Kategori for styring av instillinger"""
+        if ctx.invoked_subcommand is None:
+            await ctx.invoke(self.bot.get_command('help'),
+                             ctx.command.qualified_name)
+
+    @_admin.group(name='unntak')
+    @checks.is_mod()
+    async def _blacklist(self, ctx):
+        """Kategori for styring av unntak"""
+        if ctx.invoked_subcommand is None:
+            await ctx.invoke(self.bot.get_command('help'),
+                             ctx.command.qualified_name)
 
     @commands.guild_only()
     @commands.command()
@@ -42,9 +63,8 @@ class Sprakradet(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.guild_only()
-    @checks.is_mod()
-    @commands.command()
-    async def wordlist(self, ctx, word, big: Optional[bool] = False):
+    @_blacklist.command(name="ord")
+    async def word_blacklist(self, ctx, word, big: Optional[bool] = False):
         """
         Legger til eller fjerner ord fra untakslisten
         """
@@ -62,9 +82,8 @@ class Sprakradet(commands.Cog):
         self.save_json()
 
     @commands.guild_only()
-    @checks.is_mod()
-    @commands.command()
-    async def channellist(self, ctx, channel: discord.TextChannel = None):
+    @_blacklist.command(name="kanal")
+    async def channel_blacklist(self, ctx, channel: discord.TextChannel = None):
         """
         Legger til eller fjerner kanaler fra untakslisten
         """
@@ -81,18 +100,18 @@ class Sprakradet(commands.Cog):
         self.save_json()
 
     @commands.guild_only()
-    @checks.is_mod()
-    @commands.command()
-    async def rate(self, ctx, num):
+    @_admin.command(hidden=True)
+    async def rate(self, ctx, prosent):
         """
         Setter raten for hvor ofte botten skal reagere. 0-100
         """
-        if int(num) > 100:
+        if int(prosent) > 100:
             await ctx.send("Rate over 100, hopper over")
             return
-        BotSetup.settings["rate"][str(ctx.guild.id)] = str(num)
+        BotSetup.settings["rate"][str(ctx.guild.id)] = str(prosent)
         self.save_json()
 
+    @staticmethod
     def save_json(self):
         dataIO.js.dump(BotSetup.settings, "data/conf.json", overwrite=True, indent_format=True,
                        enable_verbose=False)
@@ -108,7 +127,9 @@ class Info(commands.Cog):
         """
         Lister info om botten, og serverrelaterte instillinger
         """
-        desc = f"Discord-programvareagent som reagerer på bruken av lånord, og forslår norske alternativer. " \
+        desc = f"Discord-programvareagent som reagerer på bruken av " \
+               f"[lånord](https://www.sprakradet.no/sprakhjelp/Skriverad/Avloeysarord/), " \
+               f"og forslår norske alternativer. " \
                f"Forbedringforslag mottas på [GitHub]({self.repo})"
         guilds = len(self.bot.guilds)
         avatar = self.bot.user.avatar_url_as(format=None, static_format='png', size=1024)
@@ -126,5 +147,5 @@ class Info(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(Sprakradet(bot))
+    bot.add_cog(Admin(bot))
     bot.add_cog(Info(bot))

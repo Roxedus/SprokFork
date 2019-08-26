@@ -1,4 +1,4 @@
-import discord
+# Discord Packages
 from discord.ext import commands
 
 
@@ -6,8 +6,8 @@ class MyHelpCommand(commands.DefaultHelpCommand):
     def get_ending_note(self):
         """Has been overridden for i18n purposes."""
         command_name = self.invoked_with
-        return "Skriv {0}{1} kommando for mer informasjon om en kommando.\n" \
-               "Du kan også skrive {0}{1} kategori for mer informasjon om en " \
+        return "Skriv {0}{1} <kommando> for mer informasjon om en kommando.\n" \
+               "Du kan også skrive {0}{1} <kategori> for mer informasjon om en " \
                "kategori.".format(self.clean_prefix, command_name)
 
     def command_not_found(self, string):
@@ -25,8 +25,9 @@ class I18n(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self._original_help_command = bot.help_command
-        bot.help_command = MyHelpCommand(commands_heading="Kommandoer:", no_category="Ingen kategori")
-        bot.help_command.cog = self
+        bot.help_command = MyHelpCommand(Cog=None, commands_heading="Kommandoer:", no_category="Ingen kategori",
+                                         command_attrs={"name": "help", "help": "Viser denne meldingen"})
+        bot.help_command.cog = None
 
     def cog_unload(self):
         self.bot.help_command = self._original_help_command

@@ -23,6 +23,7 @@ class BotSetup:
     short_words.update(extra_short_words)
     default_settings = {}
 
+    @staticmethod
     def check_folders():
         folders = ["cogs", "data"]
         for folder in folders:
@@ -30,6 +31,7 @@ class BotSetup:
                 print(f"Creating {folder} folder...")
                 os.makedirs(folder)
 
+    @staticmethod
     def check_files():
         f = "data/conf.json"
         if not js.is_json_file(f):

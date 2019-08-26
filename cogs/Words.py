@@ -1,7 +1,9 @@
-import discord
+# Discord Packages
 from discord.ext import commands
+
 import aiohttp
 
+# Bot Utilities
 from cogs.utils.Defaults import s_embed
 
 

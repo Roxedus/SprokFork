@@ -1,12 +1,15 @@
-import os
-import time
-from dataIO import js
+# Discord Packages
 import discord
 from discord.ext import commands
+
 import asyncio
+import os
+import time
 
+from dataIO import js
+
+# Bot Utilities
 from tools import GetWords
-
 
 basic_conf = {"token": "Token", "prefix": ["!"], "playing": "Teller"}
 
@@ -23,6 +26,7 @@ class BotSetup:
     short_words.update(extra_short_words)
     default_settings = {}
 
+    @staticmethod
     def check_folders():
         folders = ["cogs", "data"]
         for folder in folders:
@@ -30,6 +34,7 @@ class BotSetup:
                 print(f"Creating {folder} folder...")
                 os.makedirs(folder)
 
+    @staticmethod
     def check_files():
         f = "data/conf.json"
         if not js.is_json_file(f):

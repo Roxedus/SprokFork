@@ -44,6 +44,6 @@ Eksempel docker-compose.yml
 </details>
 
 
-Opprett en [bot-token](https://discordapp.com/developers/docs/topics/oauth2#bots), og fyll inn token-feltet i Opprett en [bot-token](https://discordapp.com/developers/docs/topics/oauth2#bots), og fyll inn token-feltet i `/sprokfork/data/conf.json`
+Opprett en [bot-token](https://discordapp.com/developers/docs/topics/oauth2#bots), og fyll inn token-feltet i `/sprokfork/data/conf.json`
 
 Du er nå klar til å starte. 

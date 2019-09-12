@@ -1,5 +1,5 @@
 ## SpråkFårk ##
-![illustrerende gif](https://raw.githubusercontent.com/Roxedus/SprokFork/dev/.assets/vis.gif)
+![illustrerende gif](https://raw.githubusercontent.com/Roxedus/SprokFork/master/.assets/vis.gif)
 
 
 Discord-programvareagent som reagerer på bruken av lånord, og foreslår norske alternativer.

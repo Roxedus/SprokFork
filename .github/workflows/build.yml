@@ -1,0 +1,82 @@
+name: Test And Build BOT
+on: [push]
+
+jobs:
+  tests:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    
+    - uses: actions/checkout@v1
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.7
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        
+    - name: Lint with flake8
+      run: |
+        pip install flake8
+        # stop the build if there are Python syntax errors or undefined names
+        flake8 --select=E9,F63,F7,F82 --show-source
+        # exit-zero treats all errors as warnings.
+        flake8 --exit-zero --max-complexity=10
+    - name: Check with Isort
+      run: |
+        pip install isort
+        isort --check -rc -sp setup.cfg .
+        
+    - name: Sort with Isort
+      if: failure()
+      run: |
+        isort -y -rc -sp setup.cfg .
+
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v1.1.2
+      if: failure()
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        REPO_ACCESS_TOKEN: ${{ secrets.REPO_ACCESS_TOKEN }}
+        PULL_REQUEST_BRANCH: actions/auto
+        COMMIT_MESSAGE: Changes done by tests
+        PULL_REQUEST_TITLE: Linter changed files
+        
+        
+  build-and-push:
+    needs: tests
+    runs-on: ubuntu-latest
+ 
+    steps:
+    - uses: actions/checkout@v1        
+    - name: Build the Docker image
+      env:
+        Repo : si0972/sprokfork
+        ref: ${{github.ref}}
+      run: |
+        branch="${ref##*/}"
+        echo $branch
+        docker build -t $Repo:$branch -t $Repo:$branch-${{github.sha}} .       
+ 
+    - name: Login to registry
+      env:
+        DOCKER_USERNAME: si0972
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+      run: echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+      
+    - name: Pushes the Docker image
+      if: github.event_name != 'pull_request' && contains(github.ref, 'actions') != 'true'
+      run: docker push si0972/sprokfork
+    
+    - name: Docker Hub README & description sync
+      if: github.event_name != 'pull_request' && contains(github.ref, 'actions') != 'true'
+      uses: meeDamian/sync-readme@v1.0.5
+      with:
+        user: si0972
+        pass: ${{ secrets.DOCKER_HUB_PASSWORD }}
+        slug: si0972/sprokfork
+
+

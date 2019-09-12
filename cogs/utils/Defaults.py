@@ -1,6 +1,8 @@
 # Discord Packages
 import discord
 
+from dataIO import js
+
 
 def s_embed(self, ctx, big_embed: bool = False):
     avatar = self.bot.user.avatar_url_as(format=None, static_format='png', size=1024)
@@ -10,3 +12,7 @@ def s_embed(self, ctx, big_embed: bool = False):
     if big_embed:
         embed.set_thumbnail(url=avatar)
     return embed
+
+
+def save_json(self):
+    js.dump(self.bot.settings, "data/conf.json", overwrite=True, indent_format=True, enable_verbose=False)

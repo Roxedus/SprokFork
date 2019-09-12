@@ -57,6 +57,8 @@ def bot_start():
     bot = commands.Bot(command_prefix=prefix, prefix=prefix)
 
     bot.short_words = BotSetup.short_words
+    bot.bad_words = BotSetup.bad_words
+    bot.settings = BotSetup.settings
 
     print("Logging in")
 

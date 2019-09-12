@@ -12,7 +12,10 @@ class Errors(commands.Cog):
         if hasattr(ctx.command, 'on_error'):
             return
 
-        self.bot.get_command(f'{ctx.command}').reset_cooldown(ctx)
+        try:
+            self.bot.get_command(f'{ctx.command}').reset_cooldown(ctx)
+        except AttributeError:
+            pass
 
         ignored = commands.CommandNotFound
         send_help = (commands.MissingRequiredArgument,

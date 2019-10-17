@@ -13,7 +13,7 @@ from tools import GetWords
 
 basic_conf = {"token": "Token", "prefix": ["!"], "playing": "Teller"}
 
-extra_bad_words = {'cringe': 'kringle'}
+extra_bad_words = {'cringe': 'kringle', 'boomer': 'sprenger', '#unbanzibon': 'nei'}
 extra_short_words = {'rph': 'Rister på hodet', 'fåvæ': 'For å være ærlig'}
 
 

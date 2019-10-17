@@ -79,13 +79,10 @@ class Sniffer(commands.Cog):
         foot = f"Takk for at du lærer, {message.author}"
         embed.set_footer(text=foot, icon_url=message.author.avatar_url)
         try:
-            print(f"Sent message to {message.author}")
             await message.author.send(embed=embed)
         except discord.errors.Forbidden:
-            print(f"Sent in {message.channel} for {message.author}")
             msg = f"Du har blokkert meg fra å sende deg meldinger, {message.author.mention}"
             await message.channel.send(content=msg, embed=embed)
-        await message.channel.send(embed=embed)
 
     async def presence(self):
         await self.bot.wait_until_ready()

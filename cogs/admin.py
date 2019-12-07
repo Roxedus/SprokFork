@@ -115,38 +115,5 @@ class Admin(commands.Cog):
         await ctx.send(embed=embed)
 
 
-class Info(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
-        self.repo = "https://github.com/Roxedus/SprokFork"
-
-    @commands.command()
-    async def info(self, ctx):
-        """
-        Lister info om botten, og serverrelaterte instillinger
-        """
-
-        dev = await self.bot.fetch_user(self.bot.settings["owner"])
-
-        desc = f"Discord-programvareagent som reagerer på bruken av " \
-               f"[lånord](https://www.sprakradet.no/sprakhjelp/Skriverad/Avloeysarord/), " \
-               f"og forslår norske alternativer. " \
-               f"Forbedringforslag mottas på [GitHub]({self.repo})"
-        guilds = len(self.bot.guilds)
-        avatar = self.bot.user.avatar_url_as(format=None, static_format='png', size=1024)
-        embed = discord.Embed(color=discord.Colour.from_rgb(245, 151, 47), description=desc)
-        embed.set_author(name=dev.name, icon_url=dev.avatar_url)
-        embed.set_thumbnail(url=avatar)
-        embed.add_field(name="Tjenere", value=str(guilds))
-        embed.add_field(name="Ord i listen", value=str(len(self.bot.bad_words)))
-        try:
-            embed.add_field(name="Rate på denne serveren", value=self.bot.settings["rate"][str(ctx.guild.id)])
-        except KeyError:
-            embed.add_field(name="Rate på denne serveren", value="50")
-
-        await ctx.send(embed=embed)
-
-
 def setup(bot):
     bot.add_cog(Admin(bot))
-    bot.add_cog(Info(bot))

@@ -76,6 +76,8 @@ def bot_start():
 
     @bot.event
     async def on_ready():
+        if not hasattr(bot, 'uptime'):
+            bot.uptime = time.time()
         if not hasattr(bot, 'appinfo'):
             bot.appinfo = await bot.application_info()
         print(discord.Client.is_ready(bot))

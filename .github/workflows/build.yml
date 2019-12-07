@@ -68,11 +68,11 @@ jobs:
       run: echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
       
     - name: Pushes the Docker image
-      if: github.event != pull_request
+      if: github.event.push
       run: docker push si0972/sprokfork
     
     - name: Docker Hub README & description sync
-      if: github.event != pull_request
+      if: github.event.push
       uses: meeDamian/sync-readme@v1.0.5
       with:
         user: si0972

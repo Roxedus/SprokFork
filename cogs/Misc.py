@@ -1,8 +1,11 @@
+# Discord Packages
 import discord
-import time
-import platform
-
 from discord.ext import commands
+
+import platform
+import time
+
+# Bot Utilities
 from cogs.utils import Bot_version
 
 

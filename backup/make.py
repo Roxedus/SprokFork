@@ -1,7 +1,11 @@
 import sys
-sys.path.append("..")
-from tools import GetWords
+
 from dataIO import js
+
+# Bot Utilities
+from tools import GetWords
+
+sys.path.append("..")
 
 avlos = GetWords.List.dict_to_json("https://www.sprakradet.no/sprakhjelp/Skriverad/Avloeysarord/")
 js.dump(avlos, "avlos.json", overwrite=True, indent_format=True, enable_verbose=False)

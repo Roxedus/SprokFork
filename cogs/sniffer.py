@@ -30,7 +30,7 @@ class Sniffer(commands.Cog):
             pass
         if message.author.bot:
             return
-        elif str(message.author.id) == "249588134021562368":
+        elif str(message.author.id) == "249588134021562368" or str(message.author.id) == "128643014422691840":
             pass
         elif int(random.randint(0, 100)) >= int(rate):
             return

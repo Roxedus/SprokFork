@@ -62,6 +62,7 @@ class Misc(commands.Cog):
                 embed.add_field(name='Melding', value=f'[Hopp!]({ctx.message.jump_url})', inline=False)
             await whook_id.send(embed=embed)
             await whook_id.delete()
+            await ctx.send("Klage mottat, behandlingstid: 2 år etter HL3")
         except KeyError:
             pass
 

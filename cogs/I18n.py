@@ -25,8 +25,10 @@ class I18n(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self._original_help_command = bot.help_command
-        bot.help_command = MyHelpCommand(Cog=None, commands_heading="Kommandoer:", no_category="Ingen kategori",
-                                         command_attrs={"name": "help", "help": "Viser denne meldingen"})
+        paginator = commands.Paginator(prefix='```md', suffix='```', max_size=2000)
+        bot.help_command = MyHelpCommand(Cog=None, commands_heading="> Kommandoer:", no_category="\n> Ingen kategori",
+                                         command_attrs={"name": "help", "help": "Viser denne meldingen"},
+                                         paginator=paginator)
         bot.help_command.cog = None
 
     def cog_unload(self):

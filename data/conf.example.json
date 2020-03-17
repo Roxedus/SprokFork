@@ -96,6 +96,7 @@
     ],
     "counter": 0,
     "owner": "",
+    "complaints": "",
     "playing": "etter l\u00e5neord",
     "prefix": [
         "sp#"

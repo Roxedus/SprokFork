@@ -1,6 +1,7 @@
 # Discord Packages
 import discord
 from discord.ext import commands
+from discord.utils import escape_mentions
 
 import platform
 import time
@@ -44,6 +45,25 @@ class Misc(commands.Cog):
         for guild in self.bot.guilds:
             guilds += f"{guild.name}\n"
         await ctx.send(guilds)
+
+    @commands.command()
+    async def klag(self, ctx, *, klage):
+        try:
+            webhook_chan = self.bot.get_channel(int(ctx.bot.settings["complaints"]))
+            try:
+                avatar_url = ctx.author.avatar_url_as(format="gif", size=1024)
+            except:
+                avatar_url = ctx.author.avatar_url_as(format="png", size=1024)
+            whook_id = await webhook_chan.create_webhook(name=ctx.author.name, avatar=await avatar_url.read(),
+                                                        reason="Klage")
+            embed = discord.Embed(title='Klage mottat', description=escape_mentions(klage), color=ctx.author.color)
+            embed.set_footer(text=f'sent av {ctx.author.name}', icon_url=avatar_url)
+            if not isinstance(ctx.message.channel, discord.DMChannel):
+                embed.add_field(name='Melding', value=f'[Hopp!]({ctx.message.jump_url})', inline=False)
+            await whook_id.send(embed=embed)
+            await whook_id.delete()
+        except KeyError:
+            pass
 
     @commands.command()
     async def info(self, ctx):
